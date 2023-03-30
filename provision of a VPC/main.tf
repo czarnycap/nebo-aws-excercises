@@ -1,6 +1,12 @@
+# Define input variables
+variable "region" {
+  description = "The AWS region to deploy resources in"
+  default     = "eu-central-1"
+}
+
 # Define AWS provider
 provider "aws" {
-  region = "eu-central-1"
+  region = var.region
 }
 
 # Create VPC
@@ -12,14 +18,14 @@ resource "aws_vpc" "example_vpc" {
 resource "aws_subnet" "public_subnet" {
   vpc_id     = aws_vpc.example_vpc.id
   cidr_block = "10.0.1.0/24"
-  availability_zone = "eu-central-1a"
+  availability_zone = "${var.region}a"
 }
 
 # Create private subnet
 resource "aws_subnet" "private_subnet" {
   vpc_id     = aws_vpc.example_vpc.id
   cidr_block = "10.0.2.0/24"
-  availability_zone = "eu-central-1b"
+  availability_zone = "${var.region}b"
 }
 
 # Create internet gateway
