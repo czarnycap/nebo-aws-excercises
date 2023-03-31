@@ -1,7 +1,12 @@
 # Define input variables
 variable "region" {
   description = "The AWS region to deploy resources in"
-  default     = "eu-central-1"
+  default     = "us-east-1"
+}
+
+variable "nebo" {
+  description = "reference for current NEBO task in my jira"
+  default = "NEBO-15"
 }
 
 # Define AWS provider
