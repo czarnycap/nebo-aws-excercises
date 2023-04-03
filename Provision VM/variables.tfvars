@@ -1,6 +1,6 @@
-subnet_a_id = "subnet-0f292ce7a79ec7651"
-subnet_b_id = "subnet-0eee9dd487f327b5e"
-instance_key_pair = "nebo-15"
+instance_key_pair = "terraform-20230403171903197000000001"
 favourite_ami = "ami-007855ac798b5175e" #ubuntu ami 22.04LTS
-default_vpc = "vpc-0cd80a837339fd472"
 region = "us-east-1"
+default_vpc = "vpc-0caa2234c78e4fcfc"
+subnet_a_id = "subnet-0e9200367fde4c544"
+subnet_b_id = "subnet-0424da2ce878d4b1b"

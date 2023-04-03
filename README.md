@@ -1,5 +1,15 @@
 this repo documents progress with implementing NEBO tasks for personal development
 
+### create PEM key to connect to EC2
+
+```
+terraform plan
+terraform apply
+terraform output #as test only
+terraform show -json|jq '.values.outputs.key_private.value'
+
+```
+
 ### provision VPCs
 ```
 export $PROVISION_VPC_DIR = ...
