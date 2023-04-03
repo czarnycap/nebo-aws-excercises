@@ -81,15 +81,15 @@ resource "aws_eip" "nebo_eip" {
   vpc = true
 }
 
-output "vpc_id" {
+output "default_vpc" {
   value = aws_vpc.nebo_vpc.id
 }
 
-output "subnet_public" {
+output "subnet_a_id" {
   value = aws_subnet.public_subnet.id
 }
 
-output "subnet_private" {
+output "subnet_b_id" {
   value = aws_subnet.private_subnet.id
 }
 
