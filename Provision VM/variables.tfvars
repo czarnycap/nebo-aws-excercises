@@ -1,5 +1,6 @@
-subnet_a_id = "subnet-038c2e12dcc35947e"
-subnet_b_id = "subnet-07f944d010ab94758"
-instance_key_pair = "keypair-nebo-1"
+subnet_a_id = "subnet-0f292ce7a79ec7651"
+subnet_b_id = "subnet-0eee9dd487f327b5e"
+instance_key_pair = "nebo-15"
 favourite_ami = "ami-007855ac798b5175e" #ubuntu ami 22.04LTS
-default_vpc = "vpc-05ca24f0196258070"
+default_vpc = "vpc-0cd80a837339fd472"
+region = "us-east-1"

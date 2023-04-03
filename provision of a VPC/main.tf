@@ -15,36 +15,36 @@ provider "aws" {
 }
 
 # Create VPC
-resource "aws_vpc" "example_vpc" {
+resource "aws_vpc" "nebo_vpc" {
   cidr_block = "10.0.0.0/16"
 }
 
 # Create public subnet
 resource "aws_subnet" "public_subnet" {
-  vpc_id     = aws_vpc.example_vpc.id
+  vpc_id     = aws_vpc.nebo_vpc.id
   cidr_block = "10.0.1.0/24"
   availability_zone = "${var.region}a"
 }
 
 # Create private subnet
 resource "aws_subnet" "private_subnet" {
-  vpc_id     = aws_vpc.example_vpc.id
+  vpc_id     = aws_vpc.nebo_vpc.id
   cidr_block = "10.0.2.0/24"
   availability_zone = "${var.region}b"
 }
 
 # Create internet gateway
-resource "aws_internet_gateway" "example_igw" {
-  vpc_id = aws_vpc.example_vpc.id
+resource "aws_internet_gateway" "nebo_igw" {
+  vpc_id = aws_vpc.nebo_vpc.id
 }
 
 # Create route table for public subnet
 resource "aws_route_table" "public_route_table" {
-  vpc_id = aws_vpc.example_vpc.id
+  vpc_id = aws_vpc.nebo_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.example_igw.id
+    gateway_id = aws_internet_gateway.nebo_igw.id
   }
 }
 
@@ -55,18 +55,18 @@ resource "aws_route_table_association" "public_route_table_association" {
 }
 
 # Create NAT gateway
-resource "aws_nat_gateway" "example_nat_gateway" {
-  allocation_id = aws_eip.example_eip.id
+resource "aws_nat_gateway" "nebo_nat_gateway" {
+  allocation_id = aws_eip.nebo_eip.id
   subnet_id     = aws_subnet.public_subnet.id
 }
 
 # Create route table for private subnet
 resource "aws_route_table" "private_route_table" {
-  vpc_id = aws_vpc.example_vpc.id
+  vpc_id = aws_vpc.nebo_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.example_nat_gateway.id
+    gateway_id = aws_nat_gateway.nebo_nat_gateway.id
   }
 }
 
@@ -77,7 +77,19 @@ resource "aws_route_table_association" "private_route_table_association" {
 }
 
 # Create EIP for NAT gateway
-resource "aws_eip" "example_eip" {
+resource "aws_eip" "nebo_eip" {
   vpc = true
+}
+
+output "vpc_id" {
+  value = aws_vpc.nebo_vpc.id
+}
+
+output "subnet_public" {
+  value = aws_subnet.public_subnet.id
+}
+
+output "subnet_private" {
+  value = aws_subnet.private_subnet.id
 }
 
