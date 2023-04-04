@@ -1,31 +1,27 @@
-resource "aws_s3_bucket" "nebo_bucket" {
+variable "region" {}
+# Define AWS provider
+
+provider "aws" {
+  region = var.region
+}
+
+resource "aws_kms_key" "nebo-key" {
+  description             = "This key is used to encrypt bucket objects"
+  deletion_window_in_days = 7
+}
+
+resource "aws_s3_bucket" "nebo-bucket-1" {
   bucket = "nebo-bucket-1"
 
-  object_lock_configuration {
-    object_lock_enabled = "Enabled"
-  }
+}
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm     = "AES256"
-      }
-    }
-  }
+resource "aws_s3_bucket_server_side_encryption_configuration" "nebo-encryption-configuration" {
+  bucket = aws_s3_bucket.nebo-bucket-1.id
 
-  replication_configuration {
-    role = "arn:aws:iam::123456789012:role/replication-role"
-
-    rules {
-      id          = "example-rule"
-      status      = "Enabled"
-      priority    = 1
-      prefix      = "example-prefix/"
-      destination {
-        bucket        = "arn:aws:s3:::replication-bucket"
-        storage_class = "STANDARD"
-      }
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.nebo-key.arn
+      sse_algorithm     = "aws:kms"
     }
   }
 }
-
