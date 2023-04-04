@@ -31,3 +31,7 @@ terraform apply -var-file="variables.tfvars"
 terraform output > variables.append
 ```
 
+### hints
+enable logs
+'set TF_LOG=DEBUG'
+
