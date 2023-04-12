@@ -74,17 +74,7 @@ resource "aws_iam_role" "rw-role" {
 #   })
 }
 
-# attach policy to the role
-resource "aws_iam_role_policy_attachment" "ro-role_attachment" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
-  role       = aws_iam_role.ro-role.name
-}
 
-# attach policy to the role
-resource "aws_iam_role_policy_attachment" "rw-role_attachment" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-  role       = aws_iam_role.rw-role.name
-}
 
 # resource "aws_iam_user_policy_attachment" "ro-user_attachment" {
 #   policy_arn = aws_iam_role_policy_attachment.ro-role_attachment.policy_arn
@@ -99,7 +89,7 @@ resource "aws_iam_role_policy_attachment" "rw-role_attachment" {
 
 
 
-resource "aws_s3_bucket_policy" "rw_bucket_policy" {
+resource "aws_s3_bucket_policy" "nebo_rw_bucket_policy" {
   bucket = var.s3_bucket_name
 
   policy = jsonencode({
@@ -111,7 +101,7 @@ resource "aws_s3_bucket_policy" "rw_bucket_policy" {
         Action = [
           "s3:GetObject",
           "s3:PutObject",
-          "s3:ListBucket"
+        #   "s3:ListBucket"
         ],
         Resource = [
           "arn:aws:s3:::${var.s3_bucket_name}/*",
@@ -122,3 +112,37 @@ resource "aws_s3_bucket_policy" "rw_bucket_policy" {
   })
 }
 
+resource "aws_s3_bucket_policy" "nebo_ro_bucket_policy" {
+  bucket = var.s3_bucket_name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = "*",
+        Action = [
+          "s3:GetObject",
+        #   "s3:PutObject",
+        #   "s3:ListBucket"
+        ],
+        Resource = [
+          "arn:aws:s3:::${var.s3_bucket_name}/*",
+          "arn:aws:s3:::${var.s3_bucket_name}"
+        ]
+      }
+    ]
+  })
+}
+
+# attach policy to the role
+resource "aws_iam_role_policy_attachment" "ro-role_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/nebo_ro_bucket_policy"
+  role       = aws_iam_role.ro-role.name
+}
+
+# attach policy to the role
+resource "aws_iam_role_policy_attachment" "rw-role_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/nebo_rw_bucket_policy"
+  role       = aws_iam_role.rw-role.name
+}
